@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Angular</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
+  </head>
+  <body>
+
+    <div ng-app="myApp">
+
+      <input ng-model="person.name" type="text" placeholder="your name">
+      <h1>Hello {{ person.name }}</h1>
+
+
+      <div ng-controller="MyController">
+        <h3>{{ clock.now }}</h3>
+      </div>
+
+      <div ng-controller="MyNameController">
+        <h3>{{ person }}</h3>
+        <p>Name: {{ person.name | uppercase }}</p>
+      </div>
+
+      <div>Hi there, {{ name }}</div>
+
+      <div ng-controller="AddController">
+        <h4>Adding machine</h4>
+        <button ng-click="add(1)" class="button">Add</button>
+        <button ng-click="subtract(1)" class="button">Subtract</button>
+        <h4>Current count: {{ counter }}</h4>
+      </div>
+
+      <div ng-controller="ParseController">
+        <input ng-model="expr" type="text" placeholder="Enter an expression">
+        <h2>{{ parsedValue }}</h2>
+      </div>
+
+      <div ng-controller="InterpolateController">
+        <input ng-model="to" type="email" placeholder="Recipient"><br>
+        <textarea ng-model="emailBody"></textarea>
+        <pre>{{ previewText }}</pre>
+      </div>
+
+    </div>
+
+
+    <script src="js/app.js"></script>
+
+  </body>
+</html>

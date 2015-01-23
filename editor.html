@@ -1,0 +1,372 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MyFasterMailer</title>
+    <link rel="stylesheet" href="css/jquery.minicolors.css">
+    <link rel="stylesheet" href="css/redactor.css">
+    <link rel="stylesheet" href="css/style.css">
+
+<style type="text/css">
+@media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+  body[yahoo] .deviceWidth {width:440px !important; padding:0 10 px 0 10px;}
+  body[yahoo] .hoofditem {width: 420px !important; padding:0 !important;}
+  body[yahoo] .banner {width: 440px !important; padding:0 !important;}
+  body[yahoo] .img {width: 420px !important; padding:0;}
+  body[yahoo] .imgitem {width: 420px !important; padding:0;}
+  body[yahoo] .tekstitem {width: 260px !important; padding:0 10px 0 10px;}
+  body[yahoo] .space {display:none !important;}
+}
+
+@media screen and (max-device-width: 479px), screen and (max-width: 479px) {
+  body[yahoo] .deviceWidth {width:280px !important; padding:0 10px 0 10px !important; display: block; }
+  body[yahoo] .hoofditem {width: 260px !important; padding:0 !important;}
+  body[yahoo] .banner {width: 280px !important; padding:0 !important;}
+  body[yahoo] .img {width: 260px !important; padding:0;}
+  body[yahoo] .imgitem {width: 260px !important; padding:0;}
+  body[yahoo] .tekstitem {width: 260px !important; padding:0 0 0 10px; display: block;}
+  body[yahoo] .space {display:none !important;}
+}
+
+
+  .ReadMsgBody {width: 100%; background-color: #F3F3F3;}
+  .ExternalClass {width: 100%; background-color: #F3F3F3;}
+  body {width: 100%; background-color: #F3F3F3; margin:0; padding:0; -webkit-font-smoothing: antialiased;}
+  table {border-collapse: collapse;}
+
+
+@media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+body[yahoo] .deviceWidth {width:440px !important; padding:0;}
+body[yahoo] .titelimg {width:420px !important; padding:0 10px 0 10px !important;}
+body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+body[yahoo] .space {display:none !important;}
+body[yahoo] .imglogo {width:406px !important;}
+
+h1 {
+font-size: 20px !important;
+line-height: 25px !important;
+margin: 0;
+}
+
+h6 {
+font-size: 22px !important;
+line-height: 28px !important;
+font-weight: normal;
+margin:0 !important;
+padding:0 !important;
+}
+
+}
+
+@media screen and (max-device-width: 479px), screen and (max-width: 479px) {
+body[yahoo] .deviceWidth {width:280px !important; padding:0;}
+body[yahoo] .titelimg {width:260px !important; padding:0 10px 0 10px !important;}
+body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+body[yahoo] .space {display:none !important;}
+body[yahoo] .imglogo {width:260px !important;}
+
+h1 {
+font-size: 20px !important;
+line-height: 27px !important;
+font-weight:normal;
+margin:0;
+}
+
+h6 {
+font-size: 16px !important;
+font-weight: normal !important;
+line-height: 24px !important;
+margin:0 !important;
+padding:0 !important;
+}
+
+}
+
+
+</style>
+
+  </head>
+  <body yahoo="fix" class="application">
+
+    <div class="navbar">
+      <img class="logo" src="http://www.the-aim.be/sites/theaim/themes/the_aim_theme/logo.png" alt="">
+      MyFasterMailer&trade;
+    </div>
+
+    <div class="app">
+
+      <div class="left">
+      <div class="templates connectedSortable">
+
+        <div class="template" data-comment="Logo blok">
+          <table class="deviceWidth" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#003732" style="line-height: 1.5em;">
+            <tr>
+              <td width="30"></td>
+              <td width="220" valign="top"><a href="#" target="_blank"><img src="http://mailings.the-aim.be/mailings/theaim/2014/mqm-sjabl/logo.jpg" width="220" style="display:block;" border="0" height="100" alt="Bedrijfsnaam" class="" /></a></td>
+              <td width="320" valign="middle" align="right" style="color:#FFFFFF;" class="field" data-label="datum" data-type="textarea">Nieuwsbrief sep 2014</td>
+              <td width="30"></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Afbeelding blok">
+          <table class="deviceWidth" border="0" cellspacing="0" cellpadding="0" width="600" bgcolor="#FFFFFF" style="line-height: 1.5em;">
+            <tr>
+              <td valign="top" width="600"><a href="http://www.the-aim.be/" target="_blank" class="field" data-label="image" data-type="image"><img class="deviceWidth" style="display: block; border: none;" src="http://myquickmailer.the-aim.be/files/www.the-aim.be/NewsletterstheAIM/Nov14/header-met-datum.jpg" alt="the AIM" width="600" border="0" /></a></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Tekstblok">
+          <table class="deviceWidth" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="line-height: 1.5em;">
+            <!-- <tr><td width="600" colspan="3" height="25"></td></tr> -->
+            <tr>
+              <td width="30"></td>
+              <td width="540" valign="top" align="left" class="field" data-label="text" data-type="textarea" style="line-height: 1.5em;">
+                <p>In boom shackalack leo nizzle nisi. I'm in the shizzle rhoncus, arcu ma nizzle malesuada facilisizzle, sem nulla shiz sizzle, nizzle auctizzle nulla shiznit a yo. Fo shizzle volutpat scelerisque augue. Sizzle egestas ass izzle libero. Sizzle rizzle. Aliquizzle phat massa a maurizzle. Boofron ante i'm in   the shizzle stuff izzle faucibizzle.</p>
+              </td>
+              <td width="30"></td>
+            </tr>
+            <!-- <tr><td width="600" colspan="3" height="35"></td></tr> -->
+          </table>
+        </div>
+
+        <div class="template" data-comment="Afbeelding met tekst naast">
+          <table class="deviceWidth" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
+            <tr>
+              <td width="30"></td>
+              <td width="255" class="tekstitem" valign="top">
+                <table width="255" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="255" valign="top" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:18px; color:#000000; line-height:22px; font-weight:bold;" class="field" data-label="title 1" data-type="text">Titel 1</td>
+                  </tr>
+                  <tr>
+                    <td width="255" height="20"></td>
+                  </tr>
+                  <tr>
+                    <td width="255" valign="top"><a href="#" target="_blank" class="field" data-label="image" data-type="image" data-id="1"><img class="imgitem" src="http://mailings.the-aim.be/mailings/theaim/2014/mqm-sjabl/foto1-t2.jpg" width="255" style="display:block;" alt="Foto 1" height="170" border="0" /></a></td>
+                  </tr>
+                  <tr>
+                    <td width="255" height="20"></td>
+                  </tr>
+                  <tr>
+                    <td width="255" valign="top" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000; line-height:20px" class="field" data-label="text 1" data-type="textarea" data-id="1">Lorem phat dolizzle sit sheezy, pot adipiscing elizzle. Shit <strong>sapizzle velizzle</strong>, break yo neck, yall volutpizzle, suscipizzle fo shizzle, fizzle vizzle, arcu. I'm in the shizzle crazy bling bling. Break it down erizzle. Fusce own yo' dolizzle dapibus crunk tempizzle yo.<br /><br /><a href="#" target="_blank" style="color:#000000">Meer lezen</a></td>
+                  </tr>
+                </table>
+              <td width="30"></td>
+              <td width="255" class="tekstitem">
+                <table width="255" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="255" valign="top" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:18px; color:#000000; line-height:22px; font-weight:bold;" class="field" data-label="title 2" data-type="text">Titel 2</td>
+                  </tr>
+                  <tr>
+                    <td width="255" height="20"></td>
+                  </tr>
+                  <tr>
+                    <td width="255" valign="top"><a href="#" target="_blank" class="field" data-label="image" data-type="image" data-id="2"><img class="imgitem" src="http://mailings.the-aim.be/mailings/theaim/2014/mqm-sjabl/foto1-t2.jpg" width="255" style="display:block;" alt="Foto 1" height="170" border="0" /></a></td>
+                  </tr>
+                  <tr>
+                    <td width="255" height="20"></td>
+                  </tr>
+                  <tr>
+                    <td width="255" valign="top" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000; line-height:20px" class="field" data-label="text 2" data-type="textarea" data-id="2">Lorem phat dolizzle sit sheezy, pot adipiscing elizzle. Shit sapizzle velizzle, break yo neck, yall volutpizzle, suscipizzle fo shizzle, fizzle vizzle, arcu. I'm in the shizzle crazy bling bling. Break it down erizzle. <strong>Fusce own</strong> yo' dolizzle dapibus crunk tempizzle yo.<br /><br /><a href="#" target="_blank" style="color:#000000">Meer lezen</a></td>
+                  </tr>
+                </table>
+              </td>
+              <td width="30"></td>
+            </tr>
+            <tr>
+              <td width="600" colspan="5" height="55"></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Witruimte">
+          <table class="deviceWidth" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
+            <tr>
+              <td width="600" colspan="5" height="58"><img src="http://mailings.the-aim.be/mailings/theaim/2014/mqm-sjabl/lijn.jpg" width="600" height="58" style="display:block"></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Afbeelding">
+          <table class="deviceWidth" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
+            <tr>
+              <td width="40"></td>
+              <td width="210" valign="top"><img src="http://mailings.the-aim.be/mailings/theaim/2014/mqm-sjabl/foto1-t4.jpg" class="field" data-label="image" data-type="image" width="210" style="display:block;" alt="Foto 1" height="150" border="0" /></td>
+              <td width="15"></td>
+              <td width="295" valign="top" align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000; line-height:22px" class="field" data-label="text" data-type="textarea">Fo shizzle my nizzle tellus shut the shizzle up, nizzle ac, condimentizzle eget, stuff check out this, mammasay mammasa mamma oo sa. Etizzle yo gangster check out this sizzle hendrerizzle boom shackalack. Pellentesque interdum magna sheezy erizzle commodo boofron. Go to hizzle brizzle fo sure.</td>
+              <td width="40"></td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="template" data-comment="Witruimte
+          <table class="deviceWidth" border="0" cellspacing="0" cellpadding="0" width="600" bgcolor="#FFFFFF">
+            <tr>
+              <td colspan="3" width="600" height="30">&#160;</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-commtent="Vette zin">
+          <table class="deviceWidth" border="0" cellspacing="0" cellpadding="0" width="600" bgcolor="#FFFFFF">
+            <tr>
+              <td width="30" class="space">&#160;</td>
+              <td align="left" valign="top" width="540" style="line-height:36px; margin:0; padding:0" class="titelimg field" data-label="title 1" data-type="text"><h6 style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; color: #939393; line-height: 30px; font-weight: bold; margin:0; padding:0;" >Marktleider in administratiesoftware trekt de kaart van internet marketing!<br /><br /></h6></td>
+              <td width="30" class="space">&#160;</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Afbeelding met grote tekst">
+          <table class="deviceWidth" width="600" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#FFFFFF">
+            <tr>
+              <td valign="top">
+                <table class="deviceWidth" style="width: 49%;" border="0" cellspacing="0" cellpadding="0" align="left">
+                  <tr>
+                    <td width="30" class="space"></td>
+                    <td valign="top" align="center"><a href="http://www.the-aim.be/aimpress/marktleider-administratiesoftware-trekt-voluit-de-kaart-van-online-marketing-syneton" target="_blank" class="field" data-label="image" data-type="image" data-id="1"><img class="titelimg" style="border: none;" src="http://myquickmailer.the-aim.be/files/www.the-aim.be/NewsletterstheAIM/Nov14/Syneton.jpg" alt="Ronde van Internet Marketing" width="260" border="0" /></a></td>
+                  </tr>
+                </table>
+                <table class="deviceWidth" style="width: 49%;" border="0" cellspacing="0" cellpadding="0" align="right">
+                  <tr>
+                    <td align="left" valign="top" style="line-height: 36px;" class="tekst field" data-label="text 1" data-type="textarea" data-id="2">
+                      <h1 style="font-family: Georgia, 'Times New Roman', Times, serif; font-size: 29px; color: #939393; line-height: 36px; font-weight: normal; margin:0;"><a style="color: #939393; text-decoration: none;" href="http://www.the-aim.be/aimpress/marktleider-administratiesoftware-trekt-voluit-de-kaart-van-online-marketing-syneton?utm_source=nieuwsbrief&utm_medium=email&utm_term=Tekst&utm_campaign=nieuwsbrief-november-theAIM" target="_blank">SYNETON TREKT DE KAART VAN INTERNET MARKETING</a>
+                      </h1><span style="font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#848484; line-height:36px"><a href="http://www.the-aim.be/aimpress/marktleider-administratiesoftware-trekt-voluit-de-kaart-van-online-marketing-syneton?utm_source=nieuwsbrief&utm_medium=email&utm_term=CTA&utm_campaign=nieuwsbrief-november-theAIM" target="_blank" style="color:#939393">Lees verder</a></span></td>
+                    <td width="30" class="space"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="template" data-comment="Logo blok">
+          <table class="deviceWidth" width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+            <tr>
+              <td width="97">&#160;</td>
+              <td valign="top" width="406"><a href="http://www.the-aim.be" target="_blank" class="field" data-label="image" data-type="image"> <img style="border: none;" border="0" src="http://mailings.the-aim.be/mailings/theaim/2014/sep/logoos-aim-sep2b.jpg" alt="Fast companies" width="406" class="imglogo" /></a></td>
+              <td width="97">&#160;</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="edit"></div>
+      </div>
+      </div>
+
+      <div class="center connectedSortable">
+
+
+        <table width="100%" border="0" bgcolor="#F7F7F7" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+              <td align="center" valign="top" class="mailing connectedSortable">
+                <p class="placeholder">Sleep &eacute;&eacute;n of meerdere templates naar hier.</p>
+              </td>
+          </tr>
+        </table>
+
+
+      </div>
+
+      <div class="right">
+
+
+
+        <div class="editor">
+
+        </div>
+
+      </div>
+    </div>
+
+
+<div id="mailTemplate">
+[{!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"}]
+[{html xmlns="http://www.w3.org/1999/xhtml"}]
+  [{head}]
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Nieuwsbrief the AIM</title>
+    <style type="text/css">
+    .ReadMsgBody {width: 100%; background-color: #F3F3F3;}
+    .ExternalClass {width: 100%; background-color: #F3F3F3;}
+    body {width: 100%; background-color: #F3F3F3; margin:0; padding:0; -webkit-font-smoothing: antialiased;}
+    table {border-collapse: collapse;}
+
+    @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    body[yahoo] .deviceWidth {width:440px !important; padding:0;}
+    body[yahoo] .titelimg {width:420px !important; padding:0 10px 0 10px !important;}
+    body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+    body[yahoo] .space {display:none !important;}
+    body[yahoo] .imglogo {width:406px !important;}
+
+    h1 {
+    font-size: 20px !important;
+    line-height: 25px !important;
+    margin: 0;
+    }
+
+    h6 {
+    font-size: 22px !important;
+    line-height: 28px !important;
+    font-weight: normal;
+    margin:0 !important;
+    padding:0 !important;
+    }
+
+    }
+
+    @media screen and (max-device-width: 479px), screen and (max-width: 479px) {
+    body[yahoo] .deviceWidth {width:280px !important; padding:0;}
+    body[yahoo] .titelimg {width:260px !important; padding:0 10px 0 10px !important;}
+    body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+    body[yahoo] .space {display:none !important;}
+    body[yahoo] .imglogo {width:260px !important;}
+
+    h1 {
+    font-size: 20px !important;
+    line-height: 27px !important;
+    font-weight:normal;
+    margin:0;
+    }
+
+    h6 {
+    font-size: 16px !important;
+    font-weight: normal !important;
+    line-height: 24px !important;
+    margin:0 !important;
+    padding:0 !important;
+    }
+
+    }
+    </style>
+  [{/head}]
+  [{body bgcolor="#F3F3F3" style="margin:0; padding:0; background-color:#F3F3F3;" yahoo="fix"}]
+    <br />
+    <table style="width: 100%;" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#F3F3F3">
+      <tr>
+        <td align="center" valign="top" id="placeholder">
+        </td>
+      </tr>
+    </table>
+  [{/body}]
+[{/html}]
+</div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
+    <script src="js/angular-dragdrop.min.js"></script> -->
+    <!-- <script src="http://cdn.ckeditor.com/4.4.6/standard-all/ckeditor.js"></script> -->
+    <script src="js/redactor.js"></script>
+    <script src="js/imagemanager.js"></script>
+    <script src="js/fontcolor.js"></script>
+    <script src="js/fontfamily.js"></script>
+    <script src="js/fontsize.js"></script>
+    <script src="js/jquery.minicolors.min.js"></script>
+    <script src="js/editor.js"></script>
+
+  </body>
+</html>
