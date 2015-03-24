@@ -13,7 +13,7 @@ if (!RedactorPlugins) var RedactorPlugins = {};
 
 				$.each(fonts, function(i, s)
 				{
-					dropdown['s' + i] = { title: s, func: function() { that.fontfamily.set(s); }};
+					dropdown[s.replace(/\ /g, '-')] = { title: s, func: function() { that.fontfamily.set(s); }, rel: s };
 				});
 
 				dropdown.remove = { title: 'Remove Font Family', func: that.fontfamily.reset };
@@ -24,6 +24,7 @@ if (!RedactorPlugins) var RedactorPlugins = {};
 			},
 			set: function (value)
 			{
+				$('.redactor-dropdown-' + value.replace(/\ /g, '-')).addClass('active').siblings().removeClass('active');
 				this.inline.format('span', 'style', 'font-family:' + value + ';');
 			},
 			reset: function()

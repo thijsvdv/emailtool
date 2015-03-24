@@ -1,3 +1,7 @@
+/* This is a modified version to show selection font-size in the dropdown menu!
+ * Do not delete!
+ * Questions? => thijs
+ */
 if (!RedactorPlugins) var RedactorPlugins = {};
 
 (function($)
@@ -13,7 +17,7 @@ if (!RedactorPlugins) var RedactorPlugins = {};
 
 				$.each(fonts, function(i, s)
 				{
-					dropdown['s' + i] = { title: s + 'px', func: function() { that.fontsize.set(s); } };
+					dropdown['s' + s] = { title: s + 'px', func: function() { that.fontsize.set(s); } };
 				});
 
 				dropdown.remove = { title: 'Remove Font Size', func: that.fontsize.reset };
@@ -23,10 +27,12 @@ if (!RedactorPlugins) var RedactorPlugins = {};
 			},
 			set: function(size)
 			{
+				$('.redactor-dropdown-s' + size).addClass('active').siblings().removeClass('active');
 				this.inline.format('span', 'style', 'font-size: ' + size + 'px; line-height: 1.5em;');
 			},
 			reset: function()
 			{
+				$('[class^="redactor-dropdown-s"]').removeClass('active');
 				this.inline.removeStyleRule('font-size');
 			}
 		};

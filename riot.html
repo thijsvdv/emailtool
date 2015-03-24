@@ -14,10 +14,6 @@
       MyFasterMailer&trade;
 
       <div class="navbar-right">
-        <span class="btn btn-default js-help">?</span>
-        <span class="btn btn-default js-back">&#8592;</span>
-        <span class="btn btn-default js-forward">&#8594;</span>
-        <span class="btn btn-info js-test">Preview mobile</span>
         <span class="btn btn-info js-show-pane">Insert template</span>
         <span class="btn btn-success js-generate">Get code</span>
       </div>
@@ -214,7 +210,7 @@
                     <table class="deviceWidth" style="width: 49%;" border="0" cellspacing="0" cellpadding="0" align="left">
                       <tr>
                         <td width="30" class="space"></td>
-                        <td width="264" valign="top" align="center" class="img"><a href="http://www.the-aim.be/aimpress/marktleider-administratiesoftware-trekt-voluit-de-kaart-van-online-marketing-syneton" target="_blank">
+                        <td valign="top" align="center" class="img"><a href="http://www.the-aim.be/aimpress/marktleider-administratiesoftware-trekt-voluit-de-kaart-van-online-marketing-syneton" target="_blank">
                           <img class="titelimg" style="border: none;" src="http://myquickmailer.the-aim.be/files/www.the-aim.be/NewsletterstheAIM/Nov14/Syneton.jpg" alt="Ronde van Internet Marketing" width="260" border="0" /></a>
                         </td>
                       </tr>
@@ -265,118 +261,67 @@
           </div>
       </div>
 
-      <div class="center" border="0">
+      <div class="center">
+
+
         <table width="100%" border="0" bgcolor="#F7F7F7" align="center" cellpadding="0" cellspacing="0">
           <tr>
               <td align="center" valign="top" class="mailing connectedSortable">
                 <p class="placeholder">Sleep &eacute;&eacute;n of meerdere templates naar hier.</p>
+                <title>RIOT example</title>
+                <timetable>
+                    <timer start="0"></timer>
+                    <timer start="10"></timer>
+                    <timer start="20"></timer>
+                </timetable>
               </td>
           </tr>
         </table>
+
+
       </div>
 
       <div class="right">
-        <!-- Editor pane -->
+
+
+
         <div class="editor">
-          <!-- Settings -->
-          <div class="pane tools tools-add">
-            <label>Settings</label>
-            <!-- <button class="btn btn-small btn-info add-image">Add image</button>
-            <button class="btn btn-small btn-info add-text">Add text</button> -->
-            <div>
-            <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="top">Vertical align top</button>
-            <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="middle">Vertical align middle</button>
-            <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="bottom">Vertical align bottom</button>
-            </div>
-            <div>
-            <button class="btn btn-small btn-info add-cell-before">Add cell before</button>
-            <button class="btn btn-small btn-info add-cell-after">Add cell after</button>
-            </div>
-            <div>
-            <button class="btn btn-small btn-danger remove-item">Remove item</button>
-            <button class="btn btn-small btn-danger remove-cell">Remove cell</button>
-            </div>
-            <div>
-            <button class="btn btn-small btn-info add-template">Add as template</button>
-            </div>
-          </div>
-          <!-- Color palette -->
-          <div class="pane colors"><label>Kleuren</label>Achtergrondkleur: <div type="text" class="bgcolor" value=""></div>
-          <input type="text" class="bgcolor-input" maxlength="7"><div class="used-colors"></div></div>
-          <!-- Fields pane -->
-          <div class="pane fields"></div>
+
+          <div class="pane"></div>
         </div>
+
       </div>
     </div>
 
-  <div id="insertTemplate">
-    <textarea name="existingTemplate" id="existingTemplate"></textarea>
-    <br><br>
-    <span class="btn btn-large btn-info js-insert">Insert</span>
-  </div>
 
-  <script id="insertedTemplate" type="text/html"></script>
-  <div id="insertedTemplateHTML" type="text/html"></div>
-
-
-<div id="mobile">
-  <!-- <iframe frameborder="0"></iframe> -->
+<div class="tools tools-add">
+  <button class="btn btn-small btn-info add-image">Add image</button>
+  <button class="btn btn-small btn-info add-text">Add text</button>
+  <button class="btn btn-small btn-info add-cell-before">Add cell before</button>
+  <button class="btn btn-small btn-info add-cell-after">Add cell after</button>
+  <button class="btn btn-small btn-danger remove-cell">Remove cell</button>
+  <button class="btn btn-small btn-info add-template">Add as template</button>
+</div>
+<div class="tools tools-remove">
+  <button class="btn btn-small btn-info add-cell-before">Add cell before</button>
+  <button class="btn btn-small btn-info add-cell-after">Add cell after</button>
+  <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="top">Vertical align top</button>
+  <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="middle">Vertical align middle</button>
+  <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="bottom">Vertical align bottom</button>
+  <button class="btn btn-small btn-danger remove-item">Remove item</button>
+  <button class="btn btn-small btn-danger remove-cell">Remove cell</button>
 </div>
 
-<div id="help"></div>
 
-<div id="base-css">
-  .ReadMsgBody {width: 100%; background-color: #F3F3F3;}
-  .ExternalClass {width: 100%; background-color: #F3F3F3;}
-  body {width: 100%; background-color: #F3F3F3; margin:0; padding:0; -webkit-font-smoothing: antialiased;}
-  table {border-collapse: collapse;}
-  .appleLinks a {color:#FFFFFF; text-decoration: none;}
-  .appleLinkshead a {color:#000000; text-decoration: none;}
-
-
-  @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
-  body[yahoo] .deviceWidth {width:440px !important;}
-  body[yahoo] .nospace {display:none !important;}
-  body[yahoo] .imgr {width:320px !important; padding:0 0 20px 0;}
-  body[yahoo] .imgr2 {width:320px !important; padding:20px 0 0 0;}
-  body[yahoo] .margin {width:20px !important;}
-  body[yahoo] .logo {width:420px !important;}
-  body[yahoo] .ref {padding:0 0 15px 0 !important;}
-  body[yahoo] .verhcentra {padding:10px 0 10px 0 !important;}
-  body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
-  body[yahoo] .full {width:440px !important;}
-  body[yahoo] .half {width:210px !important;}
-  body[yahoo] .space {display:none !important;}
-  body[yahoo] .titelimg {width:420px !important; padding:0 10px 0 10px !important;}
-  }
-
-  @media screen and (max-device-width: 479px), screen and (max-width: 479px) {
-  body[yahoo] .deviceWidth {width:280px !important;}
-  body[yahoo] .nospace {display:none !important}
-  body[yahoo] .imgr {width:220px !important; padding:0 0 20px 0 !important;}
-  body[yahoo] .imgr2 {width:220px !important; padding:20px 0 0 0 !important;}
-  body[yahoo] .margin {width:20px !important;}
-  body[yahoo] .logo {width:260px !important; padding:0 10px 0 10px;}
-  body[yahoo] .spacepijl {width:232px !important; padding:0;}
-  body[yahoo] .ref {padding:0 0 15px 0 !important;}
-  body[yahoo] .verhcentra {padding:10px 0 10px 0 !important;}
-  body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
-  body[yahoo] .full {width:280px !important;}
-  body[yahoo] .half {width:140px !important;}
-  body[yahoo] .half img {width:140px !important; height: auto !important;}
-  body[yahoo] .space {display:none !important;}
-  body[yahoo] .titelimg {width:260px !important; padding:0 10px 0 10px !important;}
-
-
-  h2 {
-  font-size: 17px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  text-align:center !important;
-  }
-
-  }
+<div id="insertTemplate">
+  <textarea name="existingTemplate" id="existingTemplate"></textarea>
+  <br><br>
+  <span class="btn btn-large btn-info js-insert">Insert</span>
 </div>
+
+<script id="insertedTemplate" type="text/html"></script>
+<div id="insertedTemplateHTML" type="text/html"></div>
+
 
 <div id="mailTemplate">
 [{!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"}]
@@ -384,8 +329,57 @@
   [{head}]
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Nieuwsbrief the AIM</title>
-    <style type="text/css" class="base-css">
+    <style type="text/css">
+    .ReadMsgBody {width: 100%; background-color: #F3F3F3;}
+    .ExternalClass {width: 100%; background-color: #F3F3F3;}
+    body {width: 100%; background-color: #F3F3F3; margin:0; padding:0; -webkit-font-smoothing: antialiased;}
+    table {border-collapse: collapse;}
+    .appleLinks a {color:#FFFFFF; text-decoration: none;}
+    .appleLinkshead a {color:#000000; text-decoration: none;}
 
+
+    @media screen and (max-device-width: 640px), screen and (max-width: 640px) {
+    body[yahoo] .deviceWidth {width:440px !important;}
+    body[yahoo] .nospace {display:none !important;}
+    body[yahoo] .imgr {width:320px !important; padding:0 0 20px 0;}
+    body[yahoo] .imgr2 {width:320px !important; padding:20px 0 0 0;}
+    body[yahoo] .margin {width:20px !important;}
+    body[yahoo] .logo {width:420px !important;}
+    body[yahoo] .ref {padding:0 0 15px 0 !important;}
+    body[yahoo] .verhcentra {padding:10px 0 10px 0 !important;}
+    body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+    body[yahoo] .full {width:440px !important;}
+    body[yahoo] .half {width:210px !important;}
+    body[yahoo] .space {display:none !important;}
+    body[yahoo] .titelimg {width:420px !important; padding:0 10px 0 10px !important;}
+    }
+
+    @media screen and (max-device-width: 479px), screen and (max-width: 479px) {
+    body[yahoo] .deviceWidth {width:280px !important;}
+    body[yahoo] .nospace {display:none !important}
+    body[yahoo] .imgr {width:220px !important; padding:0 0 20px 0 !important;}
+    body[yahoo] .imgr2 {width:220px !important; padding:20px 0 0 0 !important;}
+    body[yahoo] .margin {width:20px !important;}
+    body[yahoo] .logo {width:260px !important; padding:0 10px 0 10px;}
+    body[yahoo] .spacepijl {width:232px !important; padding:0;}
+    body[yahoo] .ref {padding:0 0 15px 0 !important;}
+    body[yahoo] .verhcentra {padding:10px 0 10px 0 !important;}
+    body[yahoo] .tekst {width:260px !important; padding:10px 10px 0 10px;}
+    body[yahoo] .full {width:280px !important;}
+    body[yahoo] .half {width:140px !important;}
+    body[yahoo] .half img {width:140px !important; height: auto !important;}
+    body[yahoo] .space {display:none !important;}
+    body[yahoo] .titelimg {width:260px !important; padding:0 10px 0 10px !important;}
+
+
+    h2 {
+    font-size: 17px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align:center !important;
+    }
+
+    }
     </style>
   [{/head}]
   [{body bgcolor="#F3F3F3" style="margin:0; padding:0; background-color:#F3F3F3;" yahoo="fix"}]
@@ -400,12 +394,9 @@
 [{/html}]
 </div>
 
-    <!-- Upload progress meter -->
-    <div id="progress" class="progress"><div class="progress-bar progress-bar-success"></div></div><div id="files" class="files"></div>
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-    <script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/riot/2.0.7/riot.min.js"></script>
     <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
     <script src="js/angular-dragdrop.min.js"></script> -->
     <!-- <script src="http://cdn.ckeditor.com/4.4.6/standard-all/ckeditor.js"></script> -->
@@ -417,7 +408,7 @@
     <script src="js/jquery.minicolors.min.js"></script>
     <script src="js/jquery.iframe-transport.js"></script>
     <script src="js/jquery.fileupload.js"></script>
-    <script src="js/editor.js"></script>
+    <script src="js/scripts.js"></script>
 
   </body>
 </html>

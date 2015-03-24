@@ -7,49 +7,39 @@
 
 // files storage folder
 $dir = 'img/upload/';
-
-// $_FILES['file']['type'] = strtolower($_FILES['file']['type']);
 $upload = array_shift($_FILES);
 
-// print("<br>");
-// print("<br>");
 
-// print_r($file);
+// print replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME']));
+// print $_SERVER['HTTP_REFERER'];
+// print $_SERVER['HTTP_HOST'];
+// print_r($upload);
 
-// print("<br>");
-// print("<br>");
-
-// $file['type'] = strtolower($_FILES['file']['type']);
-
-// print $file['type'];
-
-// if ($_FILES['file']['type'] == 'image/png'
-// || $_FILES['file']['type'] == 'image/jpg'
-// || $_FILES['file']['type'] == 'image/gif'
-// || $_FILES['file']['type'] == 'image/jpeg'
-// || $_FILES['file']['type'] == 'image/pjpeg')
-if ($upload['type'] == 'image/png'
-|| $upload['type'] == 'image/jpg'
-|| $upload['type'] == 'image/gif'
-|| $upload['type'] == 'image/jpeg'
-|| $upload['type'] == 'image/pjpeg')
+if ($upload['type'][0] == 'image/png'
+|| $upload['type'][0] == 'image/jpg'
+|| $upload['type'][0] == 'image/gif'
+|| $upload['type'][0] == 'image/jpeg'
+|| $upload['type'][0] == 'image/pjpeg')
 {
-    // print "Correct file type<br>";
     // setting file's mysterious name
     $filename = md5(date('YmdHis')).'.jpg';
     $file = $dir.$filename;
 
+    // /var/www/clients/client1/web1/web/app/mqm/
+
     // print $file . "<br>";
 
     // copying
-    move_uploaded_file($upload['tmp_name'], $file);
+    if(move_uploaded_file($upload['tmp_name'][0], $file)) {
+        // displaying file
+        $array = array(
+            'filelink' => '//' . $_SERVER['HTTP_HOST'] . '/app/mqm/img/upload/' . $filename
+        );
 
-    // displaying file
-    $array = array(
-        'filelink' => 'img/upload/'.$filename
-    );
+        echo stripslashes(json_encode($array));
 
-    echo stripslashes(json_encode($array));
+    }
+
 
 }
 

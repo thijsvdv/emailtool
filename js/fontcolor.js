@@ -65,7 +65,8 @@ if (!RedactorPlugins) var RedactorPlugins = {};
 			},
 			set: function(rule, type)
 			{
-				this.inline.format('span', 'style', rule + ': ' + type + ';');
+				// this.inline.format('span', 'style', rule + ': ' + type + ';');
+				this.inline.toggleStyle(rule + ': ' + type + ';');
 			},
 			remove: function(rule)
 			{
