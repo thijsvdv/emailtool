@@ -5,9 +5,30 @@
     <link rel="stylesheet" href="css/jquery.minicolors.css">
     <link rel="stylesheet" href="css/redactor.css">
     <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- <link rel="stylesheet" href="css/prism.css"> -->
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="css/zenburn.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body yahoo="fix" class="application">
+
+  <script type="text/javascript" src="js/justice.min.js"></script>
+  <script type="text/javascript">
+    if(location.hash === "#perf") {
+      Justice.init({
+        metrics: {
+          pageLoad: { budget: 200 },
+          domComplete: { budget: 800 },
+          domInteractive: { budget: 200 },
+          requests: { budget: 6 }
+        },
+
+        warnThreshold: 0.70,
+        showFPS: true,
+        chartType: 'spline'
+      });
+    }
+  </script>
 
     <div class="navbar">
       <img class="logo" src="http://www.the-aim.be/sites/theaim/themes/the_aim_theme/logo.png" alt="">
@@ -18,8 +39,12 @@
         <span class="btn btn-default js-back">&#8592;</span>
         <span class="btn btn-default js-forward">&#8594;</span>
         <span class="btn btn-info js-test">Preview mobile</span>
+        <span class="btn btn-info js-edit-code">Edit code</span>
+        <span class="btn btn-danger js-edit-css">Edit CSS</span>
         <span class="btn btn-info js-show-pane">Insert template</span>
         <span class="btn btn-success js-generate">Get code</span>
+        <span class="btn btn-success js-save">Save</span>
+        <span class="btn btn-success js-load">Load</span>
       </div>
     </div>
 
@@ -268,7 +293,7 @@
       <div class="center" border="0">
         <table width="100%" border="0" bgcolor="#F7F7F7" align="center" cellpadding="0" cellspacing="0">
           <tr>
-              <td align="center" valign="top" class="mailing connectedSortable">
+              <td align="center" valign="top" class="mailing connectedSortable" id="createTemplate">
                 <p class="placeholder">Sleep &eacute;&eacute;n of meerdere templates naar hier.</p>
               </td>
           </tr>
@@ -289,12 +314,19 @@
             <button class="btn btn-small btn-info set-spec" data-attr="valign" data-value="bottom">Vertical align bottom</button>
             </div>
             <div>
+            <button class="btn btn-small btn-info add-table">Add table</button>
+
+            <button class="btn btn-small btn-info add-row-before">Add row before</button>
+            <button class="btn btn-small btn-info add-row-after">Add row after</button>
+
             <button class="btn btn-small btn-info add-cell-before">Add cell before</button>
             <button class="btn btn-small btn-info add-cell-after">Add cell after</button>
             </div>
             <div>
-            <button class="btn btn-small btn-danger remove-item">Remove item</button>
+            <button class="btn btn-small btn-danger remove-table">Remove table</button>
+            <button class="btn btn-small btn-danger remove-row">Remove row</button>
             <button class="btn btn-small btn-danger remove-cell">Remove cell</button>
+            <button class="btn btn-small btn-danger remove-item">Remove item</button>
             </div>
             <div>
             <button class="btn btn-small btn-info add-template">Add as template</button>
@@ -315,12 +347,26 @@
     <span class="btn btn-large btn-info js-insert">Insert</span>
   </div>
 
+  <div id="editTemplate">
+
+    <textarea class="textarea language-markup" name="editingTemplate" id="editingTemplate" spellcheck="false">
+    </textarea>
+
+    <!-- <pre class="language-markup"><textarea class="language-markup" spellcheck="false">
+    </textarea></pre> -->
+
+    <br><br>
+    <span class="btn btn-large btn-info js-insert-edited">Insert</span>
+  </div>
+
   <script id="insertedTemplate" type="text/html"></script>
   <div id="insertedTemplateHTML" type="text/html"></div>
 
+<!-- <div id="history"></div> -->
 
 <div id="mobile">
   <!-- <iframe frameborder="0"></iframe> -->
+  <div class="closeMobile"></div>
 </div>
 
 <div id="help"></div>
@@ -382,6 +428,7 @@
 [{!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"}]
 [{html xmlns="http://www.w3.org/1999/xhtml"}]
   [{head}]
+    <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Nieuwsbrief the AIM</title>
     <style type="text/css" class="base-css">
@@ -400,16 +447,22 @@
 [{/html}]
 </div>
 
+
+    <!-- Template library -->
+    <div id="templateLibrary"></div>
+
     <!-- Upload progress meter -->
     <div id="progress" class="progress"><div class="progress-bar progress-bar-success"></div></div><div id="files" class="files"></div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-    <script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
+    <!-- <script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script> -->
     <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.js"></script>
     <script src="js/angular-dragdrop.min.js"></script> -->
     <!-- <script src="http://cdn.ckeditor.com/4.4.6/standard-all/ckeditor.js"></script> -->
-    <script src="js/redactor.js"></script>
+    <!-- <script src="js/redactor.js"></script> -->
+    <script src="ckeditor/ckeditor.js"></script>
+    <script src="ckeditor/adapters/jquery.js"></script>
     <script src="js/imagemanager.js"></script>
     <script src="js/fontcolor.js"></script>
     <script src="js/fontfamily.js"></script>
@@ -417,7 +470,31 @@
     <script src="js/jquery.minicolors.min.js"></script>
     <script src="js/jquery.iframe-transport.js"></script>
     <script src="js/jquery.fileupload.js"></script>
+
+    <script src="js/codemirror.min.js"></script>
+    <script src="js/modes/meta.js"></script>
+    <script src="js/modes/xml.js"></script>
+    <script src="js/modes/htmlmixed.js"></script>
+    <script src="js/modes/css.js"></script>
+
+    <script src="js/rasterizeHTML.allinone.js"></script>
+
+
+
+
+    <!-- <script src="js/prism.js"></script> -->
+    <!--
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script> -->
+    <!--
+    <link rel="stylesheet" href="js/styles/zenburn.css">
+    <script src="js/highlight.js"></script>
+    -->
+
+
     <script src="js/editor.js"></script>
+
+
 
   </body>
 </html>

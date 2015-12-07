@@ -15,19 +15,25 @@
 
 (function($) {
   //Variables
-    var id, sender, item,
+    var id, sender, item, editor,
         difference = $(window).innerWidth()-1600,
         $slice,
-        showHelp = true,
+        showHelp = false,
         backups = [],
         step = 0,
-        selectCell = true;
+        selectCell = true,
+        saves = [],
+        refresh = false,
+        editingCSS = false;
     window.exisingCSS = "";
     window.exisingHTML = "";
     $window = $(window);
 
+    var env = location.search.substr(1);
+    console.log(env);
+
   //Prepare html
-  help("Sleep &eacute;&eacute;n of meerdere sjablonen uit de linkerkolom naar het gebied in het midden. Wanneer een rechthoek met grijs gestippelde rand verschijnt, en daarin de boodschap 'Drop here' kunt u de blok plaatsen.<br><br>Klik op dit bericht om het te sluiten. Om het terug te openen, klik rechts op het vraagteken.");
+    help("Sleep &eacute;&eacute;n of meerdere sjablonen uit de linkerkolom naar het gebied in het midden. Wanneer een rechthoek met grijs gestippelde rand verschijnt, en daarin de boodschap 'Drop here' kunt u de blok plaatsen.<br><br>Klik op dit bericht om het te sluiten. Om het terug te openen, klik rechts op het vraagteken.");
 
   //Focus on an editable field
     $('input')
@@ -125,9 +131,16 @@
     var save = function(that) {
       var $form = $(that).closest('form');
       $form.find('textarea').each(function() {
-        $('.mailing .field[data-id="' + $(this).attr('data-target') + '"]').html($(this).redactor('code.get'));
+        // $('.mailing .field[data-id="' + $(this).attr('data-target') + '"]').html($(this).redactor('code.get'));
+        $('.mailing .field[data-id="' + $(this).attr('data-target') + '"]').html(editor.getData());
       });
     }
+
+  //Image select function
+    $('.mailing').on('click', 'img', function(e) {
+      $('.selectedImg').removeClass('selectedImg');
+      $(this).addClass('selectedImg');
+    });
 
   //Color palette
     var bgcolor = $('.selected').children('table').attr('bgcolor') || "#fff";
@@ -169,12 +182,15 @@
     $('.mailing').on('click', 'td', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      if($(this).hasClass('selectedCell')) {
+      var _this = this;
+      if($(this).hasClass('selectedCell') && !refresh) {
         $(this).removeClass('selectedCell').parents('td:first').trigger('click');
       } else {
+        refresh = false;
         var $this = $(this),
             bgcolor = $this.attr('bgcolor') || "#fff",
             type = $this.attr('data-type'),
+            colspan = $this.attr('colspan') || 1,
             cId = $this.attr('data-id');
 
         $slice = $this.parents('.mailing > .template');
@@ -213,6 +229,10 @@
             i++;
           // });
 
+        //Add colspan fields
+          $('.right .editor form[rel]').append('<div class="colspan-set"><label>Colspan</label></div>');
+          $('.right .editor form[rel]').append('<div class="colspan"><input class="td-colspan" value="' + colspan + '"></div>');
+
         //Add input fields and textareas
           if($this.hasClass('field')) {
             var delta = $this.data('id') || "",
@@ -239,6 +259,7 @@
             if(type == 'image') {
               $('.right .editor form[rel]')
                 .append('<div class="editor-img"><label>Afbeelding</label><' + openTag + ' id="' + type + id + delta + '" data-target="' + $this.data('id') + '"' + content + '</' + endTag + '><img src="' + $this.find('img').attr('src') + '"><button class="btn btn-small btn-danger img-delete">&times;</button><input type="text" class="img-w"> <input type="text" class="img-h"></div>')
+                .append('<div class=""><label>Klassen</label><input type="text" class="img-c" value="' + $('.selectedCell').find('img').attr('class') +'"></div>')
 
                 //Add editor
                   // Change this to the location of your server-side upload handler:
@@ -253,9 +274,12 @@
                           .load(function() {
                             var size = getOriginalWidthOfImg(this);
                             $(this).attr('data-w', size.w).attr('data-h', size.h);
-                            $('.selectedCell img').attr('data-w', size.w).attr('data-h', size.h);
+                            $('.selectedCell img').attr('data-w', size.w).attr('data-h', size.h).css({
+                              'width': '100%',
+                              'height': 'auto'
+                            });
                           });
-                        $('.selected img').eq($('.fields input[type="file"]').index(this)).attr('src', data.result.filelink);
+                        $('.selectedCell img').attr('src', data.result.filelink);
                         $('#progress').fadeOut();
                       },
                       progressall: function (e, data) {
@@ -275,107 +299,49 @@
               $('.right .editor form[rel]')
                 .append('<div><label>Tekst</label><' + openTag + ' id="' + type + id + delta + '" data-target="' + cId + '"' + content + '</' + endTag + '></div>')
 
-                //Add editor
-                  $('#text' + id + delta).addClass('is-redactor').redactor({
-                    focus: false,
-                    plugins: ['fontcolor', 'fontfamily', 'fontsize'],
-                    linebreaks: false,
-                    paragraphize: false,
-                    linebreaks: true,
-                    changeCallback: function()
-                    {
-                        $('#text' + id + delta).val(this.code.get());
-                        save('.js-save');
-                    },
-                    initCallback: function()
-                    {
-                        //White text is unreadable on a white background: fix this
-                        if(this.code.get().indexOf('#FFF') !== -1 || this.code.get().indexOf('#fff') !== -1 || this.code.get().indexOf('rgb(255, 255, 255)') !== -1) {
-                          this.$box.addClass('dark');
-                        }
-                    },
-                    keyupCallback: function(e){
-                      //This may be a bit heavy, to do this after every keyup
-                      var current = this.selection.getCurrent();
-                      var fontSize = 0,
-                          fontFamily = "";
+                editor = CKEDITOR.replace( 'text' + id + delta, {
+                  enterMode: CKEDITOR.ENTER_BR,
+                  toolbar: [
+                              ['Source'],
+                              ['PasteText','Undo','Redo','SpecialChar'],
+                              ['Link','Unlink','Anchor','Linkit','LinkToNode', 'LinkToMenu'],
+                              '/',
+                              ['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','RemoveFormat'],
+                              ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                              ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                              '/',
+                              ['Format','Font','FontSize','lineheight'],
+                              ['TextColor','BGColor'],
+                              // ['Maximize', 'ShowBlocks'],
+                            ]
+                });
 
-                      $('.redactor-dropdown-box-fontsize a.active, .redactor-dropdown-box-fontfamily a.active').removeClass('active');
+                editor.on("change", function(evt) {
+                  $('#text' + id + delta).val(evt.editor.getData());
+                  save('.js-save');
+                });
 
-                      try {
-                        if(current.style['font-size'] !== undefined && current.style['font-size'] !== "") {
-                          fontSize = parseInt(current.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.style['font-size'] !== undefined && current.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.parentNode.style['font-size'] !== undefined && current.parentNode.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.parentNode.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.parentNode.parentNode.style['font-size'] !== undefined && current.parentNode.parentNode.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.parentNode.parentNode.style['font-size'].replace('px',''));
-                        }
 
-                        if(fontSize > 0) {
-                          $('.redactor-dropdown-s' + fontSize).addClass('active');
-                        }
-
-                        if(current.style['font-family'] !== undefined && current.style['font-family'] !== "") {
-                          fontFamily = current.style['font-family'];
-                        } else if(current.parentNode.style['font-family'] !== undefined && current.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.style['font-family'];
-                        } else if(current.parentNode.parentNode.style['font-family'] !== undefined && current.parentNode.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.parentNode.style['font-family'];
-                        } else if(current.parentNode.parentNode.parentNode.style['font-family'] !== undefined && current.parentNode.parentNode.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.parentNode.parentNode.style['font-family'];
-                        }
-
-                        if(fontFamily !== "") {
-                          $('.redactor-dropdown-' + fontFamily.replace(/\ /g, '-')).addClass('active');
-                        }
-
-                      } catch(e) {};
-                    },
-                    clickCallback: function(e){
-                      var current = this.selection.getCurrent();
-                      var fontSize = 0,
-                          fontFamily = "";
-
-                      $('.redactor-dropdown-box-fontsize a.active, .redactor-dropdown-box-fontfamily a.active').removeClass('active');
-
-                      try {
-                        if(current.style['font-size'] !== undefined && current.style['font-size'] !== "") {
-                          fontSize = parseInt(current.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.style['font-size'] !== undefined && current.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.parentNode.style['font-size'] !== undefined && current.parentNode.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.parentNode.style['font-size'].replace('px',''));
-                        } else if(current.parentNode.parentNode.parentNode.style['font-size'] !== undefined && current.parentNode.parentNode.parentNode.style['font-size'] !== "") {
-                          fontSize = parseInt(current.parentNode.parentNode.parentNode.style['font-size'].replace('px',''));
-                        }
-
-                        console.log(fontSize);
-                        if(fontSize > 0) {
-                          $('.redactor-dropdown-s' + fontSize).addClass('active');
-                        }
-
-                        if(current.style['font-family'] !== undefined && current.style['font-family'] !== "") {
-                          fontFamily = current.style['font-family'];
-                        } else if(current.parentNode.style['font-family'] !== undefined && current.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.style['font-family'];
-                        } else if(current.parentNode.parentNode.style['font-family'] !== undefined && current.parentNode.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.parentNode.style['font-family'];
-                        } else if(current.parentNode.parentNode.parentNode.style['font-family'] !== undefined && current.parentNode.parentNode.parentNode.style['font-family'] !== "") {
-                          fontFamily = current.parentNode.parentNode.parentNode.style['font-family'];
-                        }
-
-                        console.log(fontFamily);
-                        if(fontFamily !== "") {
-                          $('.redactor-dropdown-' + fontFamily.replace(/\ /g, '-')).addClass('active');
-                        }
-
-                      } catch(e) {
-                        console.log(fontSize, fontFamily);
-                      };
+                //Set BG color of editor... FANCY! :)
+                  var getBgColor = function(elem) {
+                    if(elem.bgColor === "" || elem.bgColor === undefined) {
+                      if(elem.parentNode !== undefined) {
+                        return getBgColor(elem.parentNode);
+                      } else {
+                        return "";
+                      }
+                    } else {
+                      return elem.bgColor;
                     }
-                  });
+                  }
+
+                  var settingBG = setInterval(function() {
+                    if($('.cke_wysiwyg_frame').length > 0) {
+                      clearInterval(settingBG);
+                      $('.cke_wysiwyg_frame').css('background', getBgColor(_this));
+                    }
+                  }, 500);
+
             }
           } else {
             $('.right .editor form[rel]')
@@ -402,6 +368,11 @@
         }
     });
 
+  //Add class to image
+    $('.right').on('blur', '.img-c', function() {
+      $('.selectedCell').find('img').attr('class', $(this).val() || "");
+    });
+
   //Toggle all / responsive / desktop templates
     $('.toggle .btn').click(function(e) {
       e.preventDefault();
@@ -415,21 +386,28 @@
       $(this).siblings('.td-set').each(function() {
         w += parseInt($(this).val());
       });
-      if(e.which === 38 || e.keyCode === 38) {
-        if(w < 600)
-          $('.td-set:focus').val(parseInt($('.td-set:focus').val()) + 10);
-      }
-      if(e.which === 40 || e.keyCode === 40) {
-        if(v > 10)
-          $('.td-set:focus').val(parseInt($('.td-set:focus').val()) - 10);
-      }
+      //Arrow keys
+        if(e.which === 38 || e.keyCode === 38) {
+          if(w < parseInt($('.selectedRow').closest('table').attr('width')))
+            $('.td-set:focus').val(parseInt($('.td-set:focus').val()) + 10);
+        }
+        if(e.which === 40 || e.keyCode === 40) {
+          if(v > 10)
+            $('.td-set:focus').val(parseInt($('.td-set:focus').val()) - 10);
+        }
       $(this).trigger('change');
     });
 
+    $('.right').on('keydown', '.td-colspan', function(e) {
+      var colspan = parseInt($(this).val());
+      $('.selectedCell').attr('colspan', colspan);
+    });
+
+
     $('body').on('keydown', function(e) {
       // e.preventDefault();
-      selectCell = !$(e.target).hasClass('redactor-editor');
-
+      // selectCell = !$(e.target).hasClass('redactor-editor');
+      // console.log(selectCell);
       if($('.selectedCell').length > 0 && selectCell) {
         if(e.which === 37 || e.keyCode === 37) {
           if($('.selectedCell').prev('td')) $('.selectedCell').prev('td').trigger('click');
@@ -459,17 +437,22 @@
     $('.right').on('click', '.add-image', function(e) {
       e.preventDefault();
       e.stopPropagation();
+
       $('.selectedCell')
         .addClass('field')
         .attr('data-type', 'image')
         .attr('data-id', Math.floor(Math.random()*1000))
-        .append('<img src="//placehold.it/200x100&text=click+to+replace" width="' + $('.selectedCell').width() + '">')
+        .append('<img src="//placehold.it/200x100&text=click+to+replace" width="' + $('.selectedCell').outerWidth() + '">')
         .trigger('click');
+
     });
 
   //Add text
     $('.right').on('click', '.add-text', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       $('.selectedCell')
+        .addClass('tekstitem')
         .addClass('field')
         .attr('data-type', 'text')
         .attr('data-id', Math.floor(Math.random()*1000))
@@ -501,16 +484,55 @@
       $('.selectedCell').attr($(this).data('attr'), $(this).data('value'));
     });
 
+  //Add table
+    $('.add-table').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.selectedCell').append('<table width="' + $('.selectedCell').attr('width') +'" border="0" cellspacing="0" cellpadding="0" bgcolor="#F3F3F3"><tr><td valign="top" width="' + $('.selectedCell').attr('width') + '"></td></tr></table>');//.closest('.template').trigger('click');
+    });
+
+  //Add rows
+    $('.add-row-before').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.selectedRow').before('<tr><td width="' + $('.selectedCell').closest('table').attr('width') + '" colspan="' + parseInt($('.selectedCell').siblings('td').length + 1) + '"></td></tr>');//.closest('.template').trigger('click');
+    });
+    $('.add-row-after').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.selectedRow').after('<tr><td width="' + $('.selectedCell').closest('table').attr('width') + '" colspan="' + parseInt($('.selectedCell').siblings('td').length + 1) + '"></td></tr>');//.closest('.template').trigger('click');
+    });
+
   //Add cells
     $('.add-cell-before').click(function(e) {
       e.preventDefault();
       e.stopPropagation();
-      $('.selectedCell').before('<td width="20" height="20"></td>');//.closest('.template').trigger('click');
+      refresh = true;
+      $('.selectedCell').before('<td width="20"></td>').trigger('click');
     });
     $('.add-cell-after').click(function(e) {
       e.preventDefault();
       e.stopPropagation();
-      $('.selectedCell').after('<td width="20" height="20"></td>');//.closest('.template').trigger('click');
+      refresh = true;
+      $('.selectedCell').after('<td width="20"></td>').trigger('click');
+    });
+
+  //Remove table
+    $('.remove-table').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.selectedCell').closest('table').remove();
+      $('.fields').empty();
+      $('.editor').fadeOut();
+    });
+
+  //Remove row
+    $('.remove-row').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.selectedCell').closest('tr').remove();
+      $('.fields').empty();
+      $('.editor').fadeOut();
     });
 
   //Remove cell
@@ -522,7 +544,8 @@
       $('.editor').fadeOut();
     });
 
-  //Add template
+  //Add as template
+    /* The selected piece will be added to the template list on the left to be re-used. */
     $('.add-template').click(function() {
       $('<div class="template"></div>').insertBefore('.templates .edit');
       $('.selected')
@@ -532,13 +555,12 @@
     });
 
   //Hover td
+    /* Show guidelines on templates */
     $('.mailing')
       .on('mouseover', '.selectedRow > td', function(e) {
-        // e.stopPropagation();
         $('.right .tr-set .td-set').eq($(this).parent().children('td').index(this)).addClass('hover');
       })
       .on('mouseout', '.selectedRow > td', function(e) {
-        // e.stopPropagation();
         $('.right .tr-set .td-set').eq($(this).parent().children('td').index(this)).removeClass('hover');
       });
 
@@ -548,21 +570,34 @@
         var w = 0,
             newWidth = parseInt($(this).val());
         //Calculate total
-        w += newWidth;
-        var that = this;
-        $(this).siblings('.td-set').each(function() {
-          w += parseInt($(this).val());
-        });
-        if(w >= 600) {
-          w = 600;
-        }
-        $('td.selectedCell').closest('table')
-          .closestDescendant('td', true).eq($(this).attr('rel'))
-          .attr('width', newWidth)
-          // .find('table, td').attr('width', newWidth)
-          .find('img').attr('width', newWidth)
-                      .attr('height', newWidth*parseInt($(this).attr('data-h'))/parseInt($(this).attr('data-w')));
-        $(that).siblings('.tr-width').text(w);
+          w += newWidth;
+          var that = this;
+          $(this).siblings('.td-set').each(function() {
+            w += parseInt($(this).val());
+          });
+        //Total too wide? Add error class
+          if(w > parseInt($('.selectedRow').closest('table').attr('width'))) {
+            // w = 600;
+            $('.tr-width').addClass('error')
+          } else {
+            $('.tr-width').removeClass('error')
+          }
+
+        //Set width of cell
+          // I have forgotten why I did this width closest - closestDescendant :-o
+          // $('td.selectedCell').closest('table')
+            // .closestDescendant('td', true).eq($(this).attr('rel'))
+            // .attr('width', newWidth)
+
+          $('.selectedCell').attr('width', newWidth);
+
+        //Resize images
+          if($(that).find('img').length > 0) {
+            $(that).find('img').attr('width', newWidth)
+                        .attr('height', newWidth*parseInt($(this).attr('data-h'))/parseInt($(this).attr('data-w')));
+          }
+
+        $(that).siblings('.tr-width').text(w + ' / ' + $('.selectedRow').closest('table').attr('width'));
       })
       .on('mouseover', '.td-set', function(e) {
         $('td.selectedCell').parent()
@@ -573,6 +608,15 @@
         $('td.selectedCell').parent()
           .children('td').eq($(this).attr('rel'))
           .removeClass('hover')
+      })
+      .on('focus', '.td-set', function(e) {
+        $('td.selectedCell').removeClass('selectedCell').parent()
+          .children('td').eq($(this).attr('rel'))
+          .addClass('selectedCell')
+        selectCell = false;
+      })
+      .on('blur', '.td-set', function(e) {
+        selectCell = true;
       })
 
   //Image delete button
@@ -647,7 +691,8 @@
     function help(msg) {
       // var test = parseInt(Math.random(10)*10);
       $('#help').html(msg)
-      if(showHelp == true) {
+      if(showHelp === true) {
+        alert("KAK");
         $('#help').addClass('show');
       }
     }
@@ -663,8 +708,8 @@
     });
 
   //Generate code event
-    $('.js-generate').on('click', function(e) {
-      e.preventDefault();
+    /* Opens the template in a new screen and opens the code in a new document to be copied. */
+    function prepareCode() {
       $code = $('.app > .center').clone();
       var hasResponsive = false;
       $code.find('.template').each(function() {
@@ -682,7 +727,46 @@
       }
 
       $('#mailTemplate #placeholder').html($code);
-      var html = $("#mailTemplate").html();
+    }
+
+    $('.js-generate').on('click', function(e) {
+      e.preventDefault();
+
+      prepareCode();
+
+      var $html = $("#mailTemplate").clone();
+      // var html = $("#mailTemplate").html();
+
+      /* TODO
+
+      remove
+      - id
+      - data-id
+      - data-w
+      - data-h
+      - data-type
+      - .field
+      - .ui-resizable
+      - .tekstitem
+      - #placeholder
+
+      */
+
+      $html.find('*[data-id]').removeAttr('data-id');
+      $html.find('*[data-w]').removeAttr('data-w');
+      $html.find('*[data-h]').removeAttr('data-h');
+      $html.find('*[data-type]').removeAttr('data-type');
+      $html.find('.field').removeClass('field');
+      $html.find('.ui-resizable').removeClass('ui-resizable');
+      $html.find('.tekstitem').removeClass('tekstitem');
+      $html.find('.connectedSortable').removeClass('connectedSortable');
+      $html.find('.ui-sortable').removeClass('ui-sortable');
+      $html.find('.selectedRow').removeClass('selectedRow');
+
+
+      var html = $html.html();
+
+
       html = html.replace(/\[\{/g, '<');
       html = html.replace(/\}\]/g, '>');
 
@@ -704,10 +788,16 @@
       });
       $code.find('.ui-resizable-handle').remove();
 
+      //Add css
+      $('#mailTemplate .base-css').html($('#base-css').html());
+
+      //Add code
       $('#mailTemplate #placeholder').html($code);
       var html = $("#mailTemplate").html();
       html = html.replace(/\[\{/g, '<');
       html = html.replace(/\}\]/g, '>');
+
+      html
       // console.log(html);
 
       var newIframe = document.createElement('iframe');
@@ -715,7 +805,7 @@
       newIframe.height = '480';
       // newIframe.src = 'about:blank';
       document.getElementById('mobile').appendChild(newIframe);
-      console.log(newIframe);
+      // console.log(newIframe);
       // newIframe.contentWindow.document.open('text/htmlreplace');
       // newIframe.contentWindow.document.write(html);
       // newIframe.contentWindow.document.close();
@@ -726,6 +816,10 @@
         minWidth: 320,
         minHeight: 480,
       }).fadeIn();
+    });
+
+    $('.closeMobile').click(function() {
+      $('#mobile').fadeOut();
     });
 
   //Toggle insert template area
@@ -746,12 +840,16 @@
 
       } else {
         //Adapt the template
+        //
         console.log($('#insertedTemplateHTML').children('table').length);
         if($('#insertedTemplateHTML').children('table').length === 1) {
-          $('#insertedTemplateHTML').children('table').find('table:first').addClass('deviceWidth').siblings().addClass('deviceWidth');
+          $('#insertedTemplateHTML').children('table').removeClass('deviceWidth').find('table:first').addClass('deviceWidth').siblings().addClass('deviceWidth');
         }
         html = $('#insertedTemplateHTML').find('.deviceWidth:first').parent().html();
       }
+
+      //Add css
+      $('#base-css').text($('#insertedTemplateHTML').children('style').text());
 
       $('#insertedTemplateHTML').find('.deviceWidth:first').parent().children('.deviceWidth').each(function() {
         $(this).wrap('<div class="template"></div>');
@@ -787,6 +885,55 @@
       $('#insertTemplate').removeClass('show');
     });
 
+  //Edit template code
+    var cm;
+    $('.js-edit-code').click(function() {
+      if($('.template.selected').length > 0) {
+
+        $('#editTemplate textarea').val($('.template.selected').html());
+
+        cm = CodeMirror.fromTextArea(document.getElementById('editingTemplate'), {
+          lineNumbers: false,
+          mode: { name: "htmlmixed"},
+          tabSize: 1,
+          lineWrapping: true,
+          theme: "zenburn",
+          styleActiveLine: true,
+          matchBrackets: true,
+        });
+
+        $('#editTemplate').toggleClass('show');
+
+        if(!$('#editTemplate').hasClass('show')) {
+          cm.toTextArea();
+          $('.CodeMirror').remove();
+        }
+      }
+    });
+
+    $('.js-insert-edited').click(function() {
+      $('#editTemplate').toggleClass('show');
+      cm.save();
+      cm.toTextArea();
+
+      if(!editingCSS) {
+        $('.template.selected').html($('#editTemplate textarea').val());
+      } else {
+        editingCSS = false;
+        $('#base-css').html($('#editTemplate textarea').val());
+      }
+      // $('.CodeMirror').remove();
+    });
+
+    $('#editTemplate div.textarea code')
+      .focus(function() {
+        selectCell = false;
+      })
+      .blur(function() {
+        selectCell = true;
+      })
+
+
   //Click anywhere should hide tools
     $('.center').on('click', function(e) {
       // $('.tools:visible').fadeOut();
@@ -819,5 +966,130 @@
     });
 
   $('body').resizable();
+
+
+  //Save
+    $('.js-save').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var code = $('.center td.mailing').html();
+
+      $.ajax({
+        type: "POST",
+        url: "save.php",
+        data: {
+          'date': Date.now(),
+          'html': code
+        },
+        success: function(response) {
+          // console.log(response);
+        }
+      });
+    });
+
+  //Load
+    $('.js-load').click(function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if($('#templateLibrary .saved').length === 0) {
+        $.getJSON('list.php', function(data) {
+          window.list = {};
+          for(key in data) {
+            var date = key.split('.')[0];
+            date = new Date(1000*date);
+            date = date.toLocaleDateString();
+            // console.log(date);
+            if(list[date] === undefined) {
+              list[date] = [];
+            }
+            list[date].push(data[key]);
+            // console.log(date.toDateString());
+          }
+
+          for(key in list) {
+            $('#templateLibrary').append('<div class="templateRow" data-date="' + key + '"><span class="date">' + key + '</span></div>');
+
+              list[key].forEach(function(item) {
+                $('.templateRow[data-date="' + key + '"]').append('<div class="saved">' + item + '</div>');
+              });
+
+          }
+
+          $('#templateLibrary').fadeToggle();
+        });
+      } else {
+        $('#templateLibrary').fadeToggle();
+      }
+    });
+
+    $('#templateLibrary').on('click', '.saved', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.center .mailing').html($(this).html());
+      $('.center .mailing').find('p, span, h1, h2, h3, h4, h5, h6, h7, blockquote').closest('td').each(function() {
+        $(this).addClass("field").attr('data-type', 'text').attr('data-id', Math.floor(Math.random()*1000));
+      });
+      $('.center .mailing').find('img').closest('td').each(function() {
+        $(this).addClass("field").attr('data-type', 'image').attr('data-id', Math.floor(Math.random()*1000));
+      });
+
+      //Add slices to templates
+      $('.center .mailing').find('.template').each(function() {
+        $(this).clone().appendTo('.templates');
+      });
+
+      $('#templateLibrary').fadeOut();
+    });
+
+  //History palette resizable
+    $('#history').resizable({
+      handles: "n"
+    });
+
+  setInterval(function() {
+    var tmp = $('.app .mailing').html();
+    var local = localStorage.getItem('MFMsaves');
+
+    if(saves[saves.length-1] === tmp) {
+      console.log("No changes");
+    } else {
+      saves.push(tmp);
+      console.log("Saved");
+
+      var id = Math.floor(Math.random(1000)*10000);
+      // console.log(id);
+      $('<canvas width="600" height="800" id="c' + id + '"></canvas>').appendTo($("#history"));
+      html = document.getElementById("createTemplate").innerHTML;
+      // console.log(html);
+      rasterizeHTML.drawHTML(html, document.getElementById("c" + id));
+    }
+
+  }, 10000);
+
+  //Edit CSS
+    $('.js-edit-css').click(function() {
+      editingCSS = true;
+
+      $('#editTemplate textarea').val($('#base-css').html());
+
+      cm = CodeMirror.fromTextArea(document.getElementById('editingTemplate'), {
+        lineNumbers: false,
+        mode: { name: "css"},
+        tabSize: 1,
+        lineWrapping: true,
+        theme: "zenburn",
+        styleActiveLine: true,
+        matchBrackets: true,
+      });
+
+      $('#editTemplate').toggleClass('show');
+
+      if(!$('#editTemplate').hasClass('show')) {
+        cm.toTextArea();
+        $('.CodeMirror').remove();
+      }
+    });
 
 })(jQuery);

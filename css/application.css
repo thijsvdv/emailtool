@@ -1,0 +1,233 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  padding-left: 70px;
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+}
+
+figure {
+  margin: 0;
+  background: rgb(11, 57, 51);
+  float: left;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  padding: 0 2px;
+}
+
+.navbar .brand {
+  display: block;
+  float: left;
+  padding: 10px 20px 10px;
+  margin-left: -20px;
+  font-size: 20px;
+  font-weight: 200;
+  color: #777777;
+  text-shadow: 0 1px 0 #ffffff;
+  line-height: 50px;
+  margin: 0;
+  border-right: none;
+  /*border-left: 1px solid #d4d4d4;*/
+}
+
+img {
+  max-width: 100%;
+}
+
+nav {
+  width: 70px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /*padding-top: 70px;*/
+  border-right: 1px solid #d4d4d4;
+}
+
+nav .glyphicon {
+  display: block;
+  width: 70px !important;
+  height: 70px;
+  line-height: 70px;
+  font-size: 24px;
+  text-align: center;
+  color: #999;
+  float: left;
+  /*border-bottom: 1px solid #d4d4d4;*/
+}
+
+/*nav .glyphicon:hover {
+  background: #999;
+  color: #fff;
+}
+*/
+.navbar input:empty {
+  background: none;
+  border: none;
+  width: 110px;
+}
+
+.navbar input:focus {
+  width: auto;
+}
+
+.navbar-inner {
+  min-height: 40px;
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  background-repeat: repeat-x;
+  border-bottom: 1px solid #d4d4d4;
+/*  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;*/
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+  *zoom: 1;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
+.navbar-inner:before,
+.navbar-inner:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.navbar-inner:after {
+  clear: both;
+}
+
+.navbar .cta {
+  background: rgba(0, 171, 228, 0.7);
+  text-shadow: none;
+  color: #fff;
+}
+
+.navbar .cta:hover {
+  background: rgba(0, 171, 228, 1);
+}
+
+.glyphicon {
+  top: 0;
+}
+
+.glyphicon:empty {
+  width: initial;
+}
+
+.gn-menu li a,
+.gn-menu li .glyphicon {
+  color: rgb(135, 151, 169);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.gn-menu li:hover > a,
+.gn-menu li:hover > a .glyphicon {
+  color: #000;
+}
+
+.tickets {
+  width: 260px;
+  height: auto;
+  min-height: 100%;
+  float: left;
+  /*border-left: 1px solid rgb(198, 208, 218);*/
+  border-right: 1px solid rgb(198, 208, 218);
+  margin-left: -1px;
+  height: 100%;
+  overflow: auto;
+}
+
+.tickets article {
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid rgb(198, 208, 218);
+  line-height: 80px;
+  padding: 0 20px;
+  color: rgb(135, 151, 169);
+  font-weight: 100;
+  cursor: pointer;
+}
+
+.tickets article img {
+  float: right;
+  border-radius: 50%;
+  margin-top: 20px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.tickets article:hover {
+  color: #000;
+  background: #eee;
+}
+
+.tickets article:hover img {
+  border-radius: 0%;
+  /*-webkit-transform: rotate(25deg);*/
+}
+
+#panel-region {
+  float: left;
+  padding: 20px;
+  width: 610px;
+  height: auto;
+  margin: 20px;
+  box-shadow: 1px 1px 3px;
+  position: relative;
+}
+
+#main-region {
+  padding-top: 70px;
+  height: 100%;
+  width: 100%;
+}
+
+#main-region:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -15px;
+  top: 28%;
+  border-top: 15px solid #ccc;
+  border-left: 15px solid #ccc;
+  border-color: #ccc;
+  border-bottom: 15px solid #fff;
+  border-right: 15px solid #fff;
+  -webkit-transform: rotate(-45deg);
+}
+
+#main-region > div {
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+
+.tickets .header {
+  position: absolute;
+  background: rgba(0,0,0,0.3);
+  width: 259px;
+  padding: 10px;
+  color: #fff;
+  top: 70px;
+}

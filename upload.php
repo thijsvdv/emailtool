@@ -33,7 +33,7 @@ if ($upload['type'][0] == 'image/png'
     if(move_uploaded_file($upload['tmp_name'][0], $file)) {
         // displaying file
         $array = array(
-            'filelink' => '//' . $_SERVER['HTTP_HOST'] . '/app/mqm/img/upload/' . $filename
+            'filelink' => 'http://' . $_SERVER['HTTP_HOST'] . '/app/mqm/img/upload/' . $filename
         );
 
         echo stripslashes(json_encode($array));
